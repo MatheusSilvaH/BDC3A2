@@ -17,14 +17,14 @@ class Controller_Conta:
 
         if self.verifica_existencia_conta(id):
             # Solicita ao usuario a nova data
-            tipo = input("Tipo (Novo - 1 = Conta a Pagar  2 = Conta a Receber): ")
+            tipo = int(input("Tipo (Novo - 1 = Conta a Pagar  2 = Conta a Receber): "))
             data_quitacao = None
             # Insere e persiste o novo cliente
             self.mongo.db["conta"].insert_one({"id": id, "tipo": tipo, "data_quitacao": data_quitacao})
             # Recupera os dados do novo cliente criado transformando em um DataFrame
             df_conta = self.recupera_conta(id)
             # Cria um novo objeto Cliente
-            nova_conta = Conta(df_conta.id.values[0], df_conta.tipo.values[0], df_conta.data_quitacao)[0]
+            nova_conta = Conta(df_conta.id.values[0], df_conta.tipo.values[0], df_conta.data_quitacao.values[0])
             print(nova_conta.to_string())
             self.mongo.close()
             # Retorna o objeto nova_conta para utilização posterior, caso necessário
@@ -43,15 +43,9 @@ class Controller_Conta:
 
         # Verifica se o cliente existe na base de dados
         if not self.verifica_existencia_conta(id):
-            # Solicita a nova data de quitação da conta
-            # print("Insira data de quitacao")
-            # dia = int(input("Informe a dia de vencimento da parcela (DD): "))
-            # mes = int(input("Informe a mes de vencimento da parcela (MM): "))
-            # ano = int(input("Informe a ano de vencimento da parcela (AAAA): "))
-            # novo_data_quitacao = date(ano, mes, dia)
-            novo_data_quitacao = date(input("Informe a Data de Quitacao(AAAA-MM-DD): "))
+            novo_data_quitacao = str(input("Informe a Data de Quitacao(DD-MM-AAAA): "))
             # Atualiza a data da conta existente
-            self.mongo.db["conta"].update_one({"id": f"{id}"}, {"$setOnInsert": {"data_quitacao": novo_data_quitacao}})
+            self.mongo.db["conta"].update_one({"id": f"{id}"}, {"$set": {"data_quitacao": novo_data_quitacao}})
             # Recupera os dados da nova conta criada transformando em um DataFrame
             df_conta = self.recupera_conta(id)
             # Cria um novo objeto cliente

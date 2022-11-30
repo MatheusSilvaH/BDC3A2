@@ -6,8 +6,8 @@ class Parcelas:
     def __init__(self, 
                  id: int=None,
                  id_conta: Conta=None,
-                 data_vencimento: date=None,
-                 data_pagamento: date=None,
+                 data_vencimento: str=None,
+                 data_pagamento: str=None,
                  numero_parcela: int=None,
                  valor: float=None
                  ):
@@ -24,10 +24,10 @@ class Parcelas:
     def set_id_conta(self, id_conta:Conta):
         self.id_conta = id_conta
 
-    def set_data_vencimento(self, data_vencimento:date):
+    def set_data_vencimento(self, data_vencimento:str):
         self.data_vencimento = data_vencimento
 
-    def set_data_pagamento(self, data_pagamento:date):
+    def set_data_pagamento(self, data_pagamento:str):
         self.data_pagamento = data_pagamento
 
     def set_numero_parcela(self, numero_parcela:int):

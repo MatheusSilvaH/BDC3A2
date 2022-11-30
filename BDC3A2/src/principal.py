@@ -12,7 +12,7 @@ ctrl_parcelas = Controller_Parcelas()
 def reports(opcao_relatorio:int=0):
 
     if opcao_relatorio == 1:
-        relatorio.get_relatorio_contas()
+        relatorio.get_relatorio_conta()
     elif opcao_relatorio == 2:
         relatorio.get_relatorio_contas_a_pagar()
     elif opcao_relatorio == 3:
@@ -36,8 +36,8 @@ def atualizar(opcao_atualizar:int=0):
         relatorio.get_relatorio_conta()
         conta_atualizado = ctrl_conta.atualizar_conta()
     elif opcao_atualizar == 2:
-        relatorio.get_relatorio_clientes()
-        parcelas_atualizado = ctrl_parcelas.atualizar_parcelas()
+        relatorio.get_relatorio_parcelas()
+        parcelas_atualizado = ctrl_parcelas.atualizar_parcela()
 def excluir(opcao_excluir:int=0):
 
     if opcao_excluir == 1:
@@ -45,7 +45,7 @@ def excluir(opcao_excluir:int=0):
         ctrl_conta.excluir_conta()
     elif opcao_excluir == 2:                
         relatorio.get_relatorio_parcelas()
-        ctrl_parcelas.excluir_parcelas()
+        ctrl_parcelas.excluir_parcela()
 
 def run():
     print(tela_inicial.get_updated_screen())
@@ -59,7 +59,7 @@ def run():
         if opcao == 1: # Relatórios
             
             print(config.MENU_RELATORIOS)
-            opcao_relatorio = int(input("Escolha uma opção [0-6]: "))
+            opcao_relatorio = int(input("Escolha uma opção: "))
             config.clear_console(1)
 
             reports(opcao_relatorio)
@@ -69,7 +69,7 @@ def run():
         elif opcao == 2: # Inserir Novos Registros
             
             print(config.MENU_ENTIDADES)
-            opcao_inserir = int(input("Escolha uma opção [1-5]: "))
+            opcao_inserir = int(input("Escolha uma opção: "))
             config.clear_console(1)
 
             inserir(opcao_inserir=opcao_inserir)
@@ -81,7 +81,7 @@ def run():
         elif opcao == 3: # Atualizar Registros
 
             print(config.MENU_ENTIDADES)
-            opcao_atualizar = int(input("Escolha uma opção [1-5]: "))
+            opcao_atualizar = int(input("Escolha uma opção: "))
             config.clear_console(1)
 
             atualizar(opcao_atualizar=opcao_atualizar)
@@ -91,7 +91,7 @@ def run():
         elif opcao == 4:
 
             print(config.MENU_ENTIDADES)
-            opcao_excluir = int(input("Escolha uma opção [1-5]: "))
+            opcao_excluir = int(input("Escolha uma opção: "))
             config.clear_console(1)
 
             excluir(opcao_excluir=opcao_excluir)

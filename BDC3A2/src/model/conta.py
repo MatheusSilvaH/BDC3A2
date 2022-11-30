@@ -5,7 +5,7 @@ class Conta:
     def __init__(self, 
                  id:int=None,
                  tipo:int=None,
-                 data_quitacao:date=None
+                 data_quitacao:str=None
                 ):
         self.set_id(id)
         self.set_tipo(tipo)
@@ -17,7 +17,7 @@ class Conta:
     def set_tipo(self, tipo:int):
         self.tipo = tipo
 
-    def set_data_quitacao(self, data_quitacao:date):
+    def set_data_quitacao(self, data_quitacao:str):
         self.data_quitacao = data_quitacao
 
     def get_id(self) -> int:
@@ -26,7 +26,7 @@ class Conta:
     def get_tipo(self) -> int:
         return self.tipo
 
-    def get_data_quitacao(self) -> date:
+    def get_data_quitacao(self) -> str:
         return self.data_quitacao
 
     def to_string(self) -> str:

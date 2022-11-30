@@ -8,8 +8,7 @@ class SplashScreen:
         #               Luiz Guilherme Machado Zortéa
         #               Matheus Silva Herculino
         #               Renato Archajo Rabello
-        #               Victor Isida Hirosse
-        """
+        #               Victor Isida Hirosse """
 
         self.professor = "Prof. M.Sc. Howard Roatti"
         self.disciplina = "Banco de Dados"
@@ -27,7 +26,7 @@ class SplashScreen:
         #                                                         
         #  TOTAL DE REGISTROS:                                    
         #      1 - CONTAS:         {str(self.get_documents_count(collection_name="contas")).rjust(5)}
-        #      2 - PARCELAS:         {str(self.get_documents_count(collection_name="parcelas")).rjust(5)}
+        #      2 - PARCELAS:       {str(self.get_documents_count(collection_name="parcelas")).rjust(5)}
         #      
         #
         #  CRIADO POR: {self.created_by}

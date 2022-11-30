@@ -237,7 +237,7 @@ class Relatorio:
         print(df_fornecedor)
         input("Pressione Enter para Sair do Relatório de Fornecedores")
 
-    def get_relatorio_contas(self):
+    def get_relatorio_contasxz (self):
         # Cria uma nova conexão com o banco
         mongo = MongoQueries()
         mongo.connect()
