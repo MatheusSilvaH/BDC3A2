@@ -12,7 +12,7 @@ from controller.controller_conta import Controller_Conta
 from conexion.mongo_queries import MongoQueries
 
 
-class Controller_Parcela:
+class Controller_Parcelas:
     def __init__(self):
         self.ctrl_conta = Controller_Conta()
         self.mongo = MongoQueries()
@@ -32,7 +32,7 @@ class Controller_Parcela:
         dia = int(input("Informe a dia de vencimento da parcela (DD): "))
         mes = int(input("Informe a mes de vencimento da parcela (MM): "))
         ano = int(input("Informe a ano de vencimento da parcela (AAAA): "))
-        vencimento = date(dia, mes, ano)
+        vencimento = date(ano, mes, dia)
         data_pagamento = None
         num_parcela = float(input(f"Informe onúmero da parcela: "))
         valor = float(input(f"Informe o valor unitário de cada parcela: "))
@@ -95,11 +95,11 @@ class Controller_Parcela:
             diav = int(input("Informe a dia de vencimento da parcela (DD): "))
             mesv = int(input("Informe a mes de vencimento da parcela (MM): "))
             anov = int(input("Informe a ano de vencimento da parcela (AAAA): "))
-            vencimento = date(diav, mesv, anov)
+            vencimento = date(anov, mesv, diav)
             diap = int(input("Informe a dia de vencimento da parcela (DD): "))
             mesp = int(input("Informe a mes de vencimento da parcela (MM): "))
             anop = int(input("Informe a ano de vencimento da parcela (AAAA): "))
-            data_pagamento = date(diap, mesp, anop)
+            data_pagamento = date(anop, mesp, diap)
             num_parcela = float(input(f"Informe o número da parcela: "))
             valor = float(input(f"Informe o valor unitário de cada parcela: "))
 

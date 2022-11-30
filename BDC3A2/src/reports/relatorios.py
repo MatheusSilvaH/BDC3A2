@@ -184,7 +184,7 @@ class Relatorio:
         print(df_pedidos_fornecedor[["empresa", "qtd_pedidos", "valor_total"]])
         input("Pressione Enter para Sair do Relatório de Fornecedores")
 
-    def get_relatorio_contas(self):
+    def get_relatorio_conta(self):
         # Cria uma nova conexão com o banco
         mongo = MongoQueries()
         mongo.connect()
@@ -346,28 +346,27 @@ class Relatorio:
         print(df_pedido[["codigo_pedido", "data_pedido", "cliente", "empresa", "item_pedido", "produto", "quantidade", "valor_unitario", "valor_total"]])
         input("Pressione Enter para Sair do Relatório de Pedidos")
 
-    def get_relatorio_itens_pedidos(self):
+    def get_relatorio_parcelas_conta(self):
         # Cria uma nova conexão com o banco
         mongo = MongoQueries()
         mongo.connect()
         # Realiza uma consulta no mongo e retorna o cursor resultante para a variável
-        query_result = mongo.db['itens_pedido'].aggregate([{
-                                                            '$lookup':{'from':'produtos',
-                                                                       'localField':'codigo_produto',
-                                                                       'foreignField':'codigo_produto',
-                                                                       'as':'produto'
+        query_result = mongo.db['parcelas'].aggregate([{
+                                                            '$lookup':{'from':'contas',
+                                                                       'localField':'id',
+                                                                       'foreignField':'id_conta',
+                                                                       'as':'contas'
                                                                       }
                                                            },
                                                            {
-                                                            '$unwind':{"path": "$produto"}
+                                                            '$unwind':{"path": "$contas"}
                                                            },
-                                                           {'$project':{'codigo_pedido':1, 
-                                                                        'codigo_item_pedido':1,
-                                                                    'codigo_produto':'$produto.codigo_produto',
-                                                                    'descricao_produto':'$produto.descricao_produto',
-                                                                    'quantidade':1,
-                                                                    'valor_unitario':1,
-                                                                    'valor_total':{'$multiply':['$quantidade','$valor_unitario']},
+                                                           {'$project':{'id':1,
+                                                                    'id_conta':'$contas.id',
+                                                                    'data_vencimento':1,
+                                                                    'data_pagamento':1,
+                                                                    'numero_parcela':1,
+                                                                    'valor':{'$multiply':['$quantidade','$valor_unitario']},
                                                                     '_id':0
                                                                     }}
                                                           ])

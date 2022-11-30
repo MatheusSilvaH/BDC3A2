@@ -1,5 +1,5 @@
 from datetime import date
-from src.model.conta import Conta
+from model.conta import Conta
 
 
 class Parcelas:

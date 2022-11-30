@@ -1,3 +1,5 @@
+from datetime import date
+
 import pandas as pd
 from model.conta import Conta
 from conexion.mongo_queries import MongoQueries
@@ -16,17 +18,17 @@ class Controller_Conta:
         if self.verifica_existencia_conta(id):
             # Solicita ao usuario a nova data
             tipo = input("Tipo (Novo - 1 = Conta a Pagar  2 = Conta a Receber): ")
-            data_quitacao = input("Data de quitacao (Novo DD-MM-AAAA): ")
+            data_quitacao = None
             # Insere e persiste o novo cliente
             self.mongo.db["conta"].insert_one({"id": id, "tipo": tipo, "data_quitacao": data_quitacao})
             # Recupera os dados do novo cliente criado transformando em um DataFrame
             df_conta = self.recupera_conta(id)
             # Cria um novo objeto Cliente
-            novo_cliente = Conta(df_conta.id.values[0], df_conta.tipo.values[0], df_conta.data_quitacao)[0]
-            print(novo_cliente.to_string())
+            nova_conta = Conta(df_conta.id.values[0], df_conta.tipo.values[0], df_conta.data_quitacao)[0]
+            print(nova_conta.to_string())
             self.mongo.close()
-            # Retorna o objeto novo_cliente para utilização posterior, caso necessário
-            return novo_cliente
+            # Retorna o objeto nova_conta para utilização posterior, caso necessário
+            return nova_conta
         else:
             self.mongo.close()
             print(f"O id {id} já está cadastrado.")
@@ -42,9 +44,14 @@ class Controller_Conta:
         # Verifica se o cliente existe na base de dados
         if not self.verifica_existencia_conta(id):
             # Solicita a nova data de quitação da conta
-            novo_data_quitacao = input("Data de Quitação (Novo DD-MM-AAAA): ")
+            # print("Insira data de quitacao")
+            # dia = int(input("Informe a dia de vencimento da parcela (DD): "))
+            # mes = int(input("Informe a mes de vencimento da parcela (MM): "))
+            # ano = int(input("Informe a ano de vencimento da parcela (AAAA): "))
+            # novo_data_quitacao = date(ano, mes, dia)
+            novo_data_quitacao = date(input("Informe a Data de Quitacao(AAAA-MM-DD): "))
             # Atualiza a data da conta existente
-            self.mongo.db["conta"].update_one({"id": f"{id}"}, {"$set": {"data_quitacao": novo_data_quitacao}})
+            self.mongo.db["conta"].update_one({"id": f"{id}"}, {"$setOnInsert": {"data_quitacao": novo_data_quitacao}})
             # Recupera os dados da nova conta criada transformando em um DataFrame
             df_conta = self.recupera_conta(id)
             # Cria um novo objeto cliente

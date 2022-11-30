@@ -12,7 +12,7 @@ ctrl_parcelas = Controller_Parcelas()
 def reports(opcao_relatorio:int=0):
 
     if opcao_relatorio == 1:
-        relatorio.get_relatorio_contas_a_receber()
+        relatorio.get_relatorio_contas()
     elif opcao_relatorio == 2:
         relatorio.get_relatorio_contas_a_pagar()
     elif opcao_relatorio == 3:
@@ -33,7 +33,7 @@ def inserir(opcao_inserir:int=0):
 def atualizar(opcao_atualizar:int=0):
 
     if opcao_atualizar == 1:
-        relatorio.get_relatorio_produtos()
+        relatorio.get_relatorio_conta()
         conta_atualizado = ctrl_conta.atualizar_conta()
     elif opcao_atualizar == 2:
         relatorio.get_relatorio_clientes()
@@ -53,7 +53,7 @@ def run():
 
     while True:
         print(config.MENU_PRINCIPAL)
-        opcao = int(input("Escolha uma opção [1-5]: "))
+        opcao = int(input("Escolha uma opção: "))
         config.clear_console(1)
         
         if opcao == 1: # Relatórios

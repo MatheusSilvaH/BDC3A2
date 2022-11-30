@@ -7,7 +7,7 @@ MENU_PRINCIPAL = """Menu Principal
 """
 
 MENU_RELATORIOS = """Relatórios
-1 - Relatório de Valores a Receber
+1 - Relatório de Contas
 2 - Relatório de Valores a Pagar
 3 - Relatório de Produtos
 4 - Relatório de Clientes
