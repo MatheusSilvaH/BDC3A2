@@ -8,11 +8,11 @@ MENU_PRINCIPAL = """Menu Principal
 
 MENU_RELATORIOS = """Relatórios
 1 - Relatório de Contas
-2 - Relatório de Valores a Pagar
-3 - Relatório de Produtos
-4 - Relatório de Clientes
-5 - Relatório de Fornecedores
-6 - Relatório de Itens de Pedidos
+2 - Relatório de Parcelas
+3 - Relatório de 
+4 - Relatório de 
+5 - Relatório de 
+6 - Relatório de 
 0 - Sair
 """
 

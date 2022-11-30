@@ -200,24 +200,28 @@ class Relatorio:
         mongo.close()
         # Exibe o resultado
         print(df_conta)
-        input("Pressione Enter para Sair do Relatório de conta")
+        input("Pressione Enter para Sair do Relatório de Contas")
 
-    def get_relatorio_clientes(self):
+    def get_relatorio_parcelas(self):
         # Cria uma nova conexão com o banco
         mongo = MongoQueries()
         mongo.connect()
         # Recupera os dados transformando em um DataFrame
-        query_result = mongo.db["clientes"].find({},
-                                                 {"cpf": 1,
-                                                  "nome": 1,
+        query_result = mongo.db["parcelas"].find({},
+                                                 {"id": 1,
+                                                  "id_conta": 1,
+                                                  "data_vencimento": 1,
+                                                  "data_pagamento": 1,
+                                                  "numero_parcela": 1,
+                                                  "valor": 1,
                                                   "_id": 0
-                                                 }).sort("nome", ASCENDING)
-        df_cliente = pd.DataFrame(list(query_result))
+                                                 }).sort("id_conta", ASCENDING)
+        df_parcelas = pd.DataFrame(list(query_result))
         # Fecha a conexão com o mongo
         mongo.close()
         # Exibe o resultado
-        print(df_cliente)
-        input("Pressione Enter para Sair do Relatório de Clientes")
+        print(df_parcelas)
+        input("Pressione Enter para Sair do Relatório de Parcelas")
 
     def get_relatorio_fornecedores(self):
         # Cria uma nova conexão com o banco

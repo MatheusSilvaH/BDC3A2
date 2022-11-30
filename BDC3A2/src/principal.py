@@ -14,9 +14,9 @@ def reports(opcao_relatorio:int=0):
     if opcao_relatorio == 1:
         relatorio.get_relatorio_conta()
     elif opcao_relatorio == 2:
-        relatorio.get_relatorio_contas_a_pagar()
+        relatorio.get_relatorio_parcelas()
     elif opcao_relatorio == 3:
-        relatorio.get_relatorio_parcelas_a_receber()
+        relatorio.get_relatorio_valor_conta()
     elif opcao_relatorio == 4:
         relatorio.get_relatorio_parcelas_a_pagar()
     elif opcao_relatorio == 5:

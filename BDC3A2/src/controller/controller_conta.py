@@ -72,6 +72,7 @@ class Controller_Conta:
             # Recupera os dados do novo cliente criado transformando em um DataFrame
             df_conta = self.recupera_conta(id)
             # Revome a conta da tabela
+            self.mongo.db["parcelas"].delete_one({"id_conta":f"{id}"})
             self.mongo.db["conta"].delete_one({"id":f"{id}"})
             # Cria um novo objeto Conta para informar que foi removido
             conta_excluida = Conta(df_conta.id.values[0], df_conta.tipo.values[0], df_conta.data_quitacao.values[0])

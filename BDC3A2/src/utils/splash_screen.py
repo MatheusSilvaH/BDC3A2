@@ -25,7 +25,7 @@ class SplashScreen:
         #              Registro de contas e parcelas                     
         #                                                         
         #  TOTAL DE REGISTROS:                                    
-        #      1 - CONTAS:         {str(self.get_documents_count(collection_name="contas")).rjust(5)}
+        #      1 - CONTAS:         {str(self.get_documents_count(collection_name="conta")).rjust(5)}
         #      2 - PARCELAS:       {str(self.get_documents_count(collection_name="parcelas")).rjust(5)}
         #      
         #
