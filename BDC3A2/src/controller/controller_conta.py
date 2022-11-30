@@ -1,5 +1,5 @@
 import pandas as pd
-from model.clientes import Conta
+from model.conta import Conta
 from conexion.mongo_queries import MongoQueries
 
 class Controller_Conta:
@@ -11,16 +11,16 @@ class Controller_Conta:
         self.mongo.connect()
 
         # Solicita ao usuario o novo id de conta
-        id = input("id(Novo): ")
+        id = input("id(Novo int): ")
 
         if self.verifica_existencia_conta(id):
-            # Solicita ao usuario o novo nome
-            tipo = input("Tipo (Novo): ")
-            data_quitacao = input("Data de quitacao (Novo): ")
+            # Solicita ao usuario a nova data
+            tipo = input("Tipo (Novo - 1 = Conta a Pagar  2 = Conta a Receber): ")
+            data_quitacao = input("Data de quitacao (Novo DD-MM-AAAA): ")
             # Insere e persiste o novo cliente
             self.mongo.db["conta"].insert_one({"id": id, "tipo": tipo, "data_quitacao": data_quitacao})
             # Recupera os dados do novo cliente criado transformando em um DataFrame
-            df_conta = self.recupera_id(id)
+            df_conta = self.recupera_conta(id)
             # Cria um novo objeto Cliente
             novo_cliente = Conta(df_conta.id.values[0], df_conta.tipo.values[0], df_conta.data_quitacao)[0]
             print(novo_cliente.to_string())
@@ -32,80 +32,82 @@ class Controller_Conta:
             print(f"O id {id} já está cadastrado.")
             return None
 
-    def atualizar_Conta(self) -> Conta:
+    def atualizar_conta(self) -> Conta:
         # Cria uma nova conexão com o banco que permite alteração
         self.mongo.connect()
 
         # Solicita ao usuário o código do cliente a ser alterado
-        cpf = input("CPF do cliente que deseja alterar o nome: ")
+        id = input("id da conta que deseja alterar a Data de Quitação: ")
 
         # Verifica se o cliente existe na base de dados
-        if not self.verifica_existencia_cliente(cpf):
-            # Solicita a nova descrição do cliente
-            novo_nome = input("Nome (Novo): ")
-            # Atualiza o nome do cliente existente
-            self.mongo.db["clientes"].update_one({"cpf": f"{cpf}"}, {"$set": {"nome": novo_nome}})
-            # Recupera os dados do novo cliente criado transformando em um DataFrame
-            df_cliente = self.recupera_cliente(cpf)
+        if not self.verifica_existencia_conta(id):
+            # Solicita a nova data de quitação da conta
+            novo_data_quitacao = input("Data de Quitação (Novo DD-MM-AAAA): ")
+            # Atualiza a data da conta existente
+            self.mongo.db["conta"].update_one({"id": f"{id}"}, {"$set": {"data_quitacao": novo_data_quitacao}})
+            # Recupera os dados da nova conta criada transformando em um DataFrame
+            df_conta = self.recupera_conta(id)
             # Cria um novo objeto cliente
-            cliente_atualizado = Cliente(df_cliente.cpf.values[0], df_cliente.nome.values[0])
+            conta_atualizada = Conta(df_conta.id.values[0], df_conta.tipo.values[0], df_conta.data_quitacao.values[0])
             # Exibe os atributos do novo cliente
-            print(cliente_atualizado.to_string())
+            print(conta_atualizada.to_string())
             self.mongo.close()
             # Retorna o objeto cliente_atualizado para utilização posterior, caso necessário
-            return cliente_atualizado
+            return conta_atualizada
         else:
             self.mongo.close()
-            print(f"O CPF {cpf} não existe.")
+            print(f"O idF {id} não existe.")
             return None
 
-    def excluir_cliente(self):
+    def excluir_conta(self):
         # Cria uma nova conexão com o banco que permite alteração
         self.mongo.connect()
 
-        # Solicita ao usuário o CPF do Cliente a ser alterado
-        cpf = input("CPF do Cliente que irá excluir: ")
+        # Solicita ao usuário o id da Conta a ser alterado
+        id = input("id da conta que irá excluir: ")
 
         # Verifica se o cliente existe na base de dados
-        if not self.verifica_existencia_cliente(cpf):            
+        if not self.verifica_existencia_conta(id):
             # Recupera os dados do novo cliente criado transformando em um DataFrame
-            df_cliente = self.recupera_cliente(cpf)
-            # Revome o cliente da tabela
-            self.mongo.db["clientes"].delete_one({"cpf":f"{cpf}"})
-            # Cria um novo objeto Cliente para informar que foi removido
-            cliente_excluido = Cliente(df_cliente.cpf.values[0], df_cliente.nome.values[0])
+            df_conta = self.recupera_conta(id)
+            # Revome a conta da tabela
+            self.mongo.db["conta"].delete_one({"id":f"{id}"})
+            # Cria um novo objeto Conta para informar que foi removido
+            conta_excluida = Conta(df_conta.id.values[0], df_conta.tipo.values[0], df_conta.data_quitacao.values[0])
             self.mongo.close()
             # Exibe os atributos do cliente excluído
-            print("Cliente Removido com Sucesso!")
-            print(cliente_excluido.to_string())
+            print("Conta Removida com Sucesso!")
+            print(conta_excluida.to_string())
         else:
             self.mongo.close()
-            print(f"O CPF {cpf} não existe.")
+            print(f"O id {id} não existe.")
 
-    def verifica_existencia_cliente(self, cpf:str=None, external:bool=False) -> bool:
+    def verifica_existencia_conta(self, id=None, external:bool=False) -> bool:
         if external:
             # Cria uma nova conexão com o banco que permite alteração
             self.mongo.connect()
 
-        # Recupera os dados do novo cliente criado transformando em um DataFrame
-        df_cliente = pd.DataFrame(self.mongo.db["clientes"].find({"cpf":f"{cpf}"}, {"cpf": 1, "nome": 1, "_id": 0}))
+        # Recupera os dados da nova Conta criava transformando em um DataFrame
+        df_conta = pd.DataFrame(self.mongo.db["conta"].find({"id":f"{id}"}, {"id": 1, "tipo": 1, "data_quitacao": 1,
+                                                                             "_id": 0}))
 
         if external:
             # Fecha a conexão com o Mongo
             self.mongo.close()
 
-        return df_cliente.empty
+        return df_conta.empty
 
-    def recupera_cliente(self, cpf:str=None, external:bool=False) -> pd.DataFrame:
+    def recupera_conta(self, id=None, external:bool=False) -> pd.DataFrame:
         if external:
             # Cria uma nova conexão com o banco que permite alteração
             self.mongo.connect()
 
         # Recupera os dados do novo cliente criado transformando em um DataFrame
-        df_cliente = pd.DataFrame(list(self.mongo.db["clientes"].find({"cpf":f"{cpf}"}, {"cpf": 1, "nome": 1, "_id": 0})))
+        df_conta = pd.DataFrame(list(self.mongo.db["conta"].find({"id":f"{id}"}, {"id": 1, "tipo": 1,
+                                                                                    "data_quitacao": 1, "_id": 0})))
         
         if external:
             # Fecha a conexão com o Mongo
             self.mongo.close()
 
-        return df_cliente
+        return df_conta

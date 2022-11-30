@@ -1,11 +1,11 @@
 from datetime import date
-from src.model.conta import Contas
+from src.model.conta import Conta
 
 
 class Parcelas:
     def __init__(self, 
                  id: int=None,
-                 id_conta: Contas=None,
+                 id_conta: Conta=None,
                  data_vencimento: date=None,
                  data_pagamento: date=None,
                  numero_parcela: int=None,
@@ -21,7 +21,7 @@ class Parcelas:
     def set_id(self, id:int):
         self.id = id
 
-    def set_id_conta(self, id_conta:Contas):
+    def set_id_conta(self, id_conta:Conta):
         self.id_conta = id_conta
 
     def set_data_vencimento(self, data_vencimento:date):
@@ -39,7 +39,7 @@ class Parcelas:
     def get_id(self) -> int:
         return self.id
 
-    def get_id_conta(self) -> Contas:
+    def get_id_conta(self) -> Conta:
         return self.id_conta
 
     def get_data_vencimento(self) -> date:
