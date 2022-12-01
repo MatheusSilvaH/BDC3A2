@@ -15,8 +15,6 @@ def reports(opcao_relatorio:int=0):
         relatorio.get_relatorio_conta()
     elif opcao_relatorio == 2:
         relatorio.get_relatorio_parcelas()
-    elif opcao_relatorio == 3:
-        relatorio.get_valor_conta()
 def inserir(opcao_inserir:int=0):
 
     if opcao_inserir == 1:                               

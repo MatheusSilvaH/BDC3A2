@@ -146,28 +146,6 @@ class Controller_Parcelas:
             self.mongo.close()
             print(f"O id {id} não existe.")
 
-    def excluir_todas_parcelas_conta(self, id_conta,id ):
-        self.mongo.connect()
-
-        self.relatorio.get_relatorio_conta()
-        id_conta = int(str(input("Digite o id da Conta: ")))
-        conta = self.valida_conta(id_conta)
-        if conta == None:
-            return None
-
-
-        # Verifica se a Parcela existe na base de dados
-        if not self.verifica_existencia_parcela(id, id_conta):
-            # Recupera os dados da parcela criada transformando em um DataFrame
-            df_parcela = self.recupera_parcela(id, id_conta)
-            # id_conta = self.valida_conta(int(df_parcela.id_conta.values[0]))
-
-
-            self.mongo.db["parcelas"].delete_many({"id": id, "id_conta": id_conta})
-
-        else:
-            self.mongo.close()
-            print(f"O id {id} não existe.")
 
     def verifica_existencia_parcela(self, id=None, id_conta=None) -> bool:
         # Recupera os dados do novo pedido criado transformando em um DataFrame

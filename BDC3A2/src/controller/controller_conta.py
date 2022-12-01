@@ -5,7 +5,6 @@ from model.conta import Conta
 from conexion.mongo_queries import MongoQueries
 
 
-
 class Controller_Conta:
     def __init__(self):
         self.mongo = MongoQueries()
@@ -76,7 +75,7 @@ class Controller_Conta:
                 df_conta = self.recupera_conta(id)
                 # Revome a conta da tabela
                 self.mongo.db["conta"].delete_one({"id":f"{id}"})
-
+                self.mongo.db["parcelas"].delete_one({"id_conta": id})
                 # Cria um novo objeto Conta para informar que foi removido
                 conta_excluida = Conta(df_conta.id.values[0], df_conta.tipo.values[0], df_conta.data_quitacao.values[0])
                 self.mongo.close()
