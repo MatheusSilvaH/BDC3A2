@@ -9,10 +9,7 @@ MENU_PRINCIPAL = """Menu Principal
 MENU_RELATORIOS = """Relatórios
 1 - Relatório de Contas
 2 - Relatório de Parcelas
-3 - Relatório de 
-4 - Relatório de 
-5 - Relatório de 
-6 - Relatório de 
+3 - Relatório de Valor por Conta
 0 - Sair
 """
 

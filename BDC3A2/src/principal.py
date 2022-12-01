@@ -16,14 +16,7 @@ def reports(opcao_relatorio:int=0):
     elif opcao_relatorio == 2:
         relatorio.get_relatorio_parcelas()
     elif opcao_relatorio == 3:
-        relatorio.get_relatorio_valor_conta()
-    elif opcao_relatorio == 4:
-        relatorio.get_relatorio_parcelas_a_pagar()
-    elif opcao_relatorio == 5:
-        relatorio.get_relatorio_fornecedores()
-    elif opcao_relatorio == 6:
-        relatorio.get_relatorio_itens_pedidos()
-
+        relatorio.get_valor_conta()
 def inserir(opcao_inserir:int=0):
 
     if opcao_inserir == 1:                               
@@ -57,44 +50,70 @@ def run():
         config.clear_console(1)
         
         if opcao == 1: # Relatórios
-            
-            print(config.MENU_RELATORIOS)
-            opcao_relatorio = int(input("Escolha uma opção: "))
-            config.clear_console(1)
+            continua = True
+            while continua:
+                print(config.MENU_RELATORIOS)
+                opcao_relatorio = int(input("Escolha uma opção: "))
+                config.clear_console(1)
 
-            reports(opcao_relatorio)
+
+                reports(opcao_relatorio)
+                opcao_continuar = input("Deseja consultar outro relatorio [S ou N]: ")
+                if opcao_continuar.lower() == "s":
+                    pass
+                else:
+                    continua = False
 
             config.clear_console(1)
 
         elif opcao == 2: # Inserir Novos Registros
-            
-            print(config.MENU_ENTIDADES)
-            opcao_inserir = int(input("Escolha uma opção: "))
-            config.clear_console(1)
+            continua = True
+            while continua:
+                print(config.MENU_ENTIDADES)
+                opcao_inserir = int(input("Escolha uma opção: "))
+                config.clear_console(1)
 
-            inserir(opcao_inserir=opcao_inserir)
+                inserir(opcao_inserir=opcao_inserir)
+
+                opcao_continuar = input("Deseja inserir outro registro [S ou N]: ")
+                if opcao_continuar.lower() == "s":
+                    pass
+                else:
+                    continua = False
 
             config.clear_console()
             print(tela_inicial.get_updated_screen())
             config.clear_console()
 
         elif opcao == 3: # Atualizar Registros
+            continua = True
+            while continua:
+                print(config.MENU_ENTIDADES)
+                opcao_atualizar = int(input("Escolha uma opção: "))
+                config.clear_console(1)
 
-            print(config.MENU_ENTIDADES)
-            opcao_atualizar = int(input("Escolha uma opção: "))
-            config.clear_console(1)
-
-            atualizar(opcao_atualizar=opcao_atualizar)
+                atualizar(opcao_atualizar=opcao_atualizar)
+                opcao_continuar = input("Deseja atualizar outro registro [S ou N]: ")
+                if opcao_continuar.lower() == "s":
+                    pass
+                else:
+                    continua = False
 
             config.clear_console()
 
         elif opcao == 4:
+            continua = True
+            while continua:
+                print(config.MENU_ENTIDADES)
+                opcao_excluir = int(input("Escolha uma opção: "))
+                config.clear_console(1)
 
-            print(config.MENU_ENTIDADES)
-            opcao_excluir = int(input("Escolha uma opção: "))
-            config.clear_console(1)
-
-            excluir(opcao_excluir=opcao_excluir)
+                excluir(opcao_excluir=opcao_excluir)
+                opcao_continuar = input("Deseja remover outro registro [S ou N]: ")
+                if opcao_continuar.lower() == "s":
+                    pass
+                else:
+                    continua = False
 
             config.clear_console()
             print(tela_inicial.get_updated_screen())

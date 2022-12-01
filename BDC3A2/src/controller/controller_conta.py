@@ -4,14 +4,15 @@ import pandas as pd
 from model.conta import Conta
 from conexion.mongo_queries import MongoQueries
 
+
+
 class Controller_Conta:
     def __init__(self):
         self.mongo = MongoQueries()
         
     def inserir_conta(self) -> Conta:
-        # Cria uma nova conexão com o banco que permite alteração
-        self.mongo.connect()
 
+        self.mongo.connect()
         # Solicita ao usuario o novo id de conta
         id = input("id(Novo int): ")
 
@@ -32,6 +33,7 @@ class Controller_Conta:
         else:
             self.mongo.close()
             print(f"O id {id} já está cadastrado.")
+
             return None
 
     def atualizar_conta(self) -> Conta:
@@ -63,26 +65,29 @@ class Controller_Conta:
     def excluir_conta(self):
         # Cria uma nova conexão com o banco que permite alteração
         self.mongo.connect()
-
-        # Solicita ao usuário o id da Conta a ser alterado
+            # Solicita ao usuário o id da Conta a ser alterado
         id = input("id da conta que irá excluir: ")
 
         # Verifica se o cliente existe na base de dados
-        if not self.verifica_existencia_conta(id):
-            # Recupera os dados do novo cliente criado transformando em um DataFrame
-            df_conta = self.recupera_conta(id)
-            # Revome a conta da tabela
-            self.mongo.db["parcelas"].delete_one({"id_conta":f"{id}"})
-            self.mongo.db["conta"].delete_one({"id":f"{id}"})
-            # Cria um novo objeto Conta para informar que foi removido
-            conta_excluida = Conta(df_conta.id.values[0], df_conta.tipo.values[0], df_conta.data_quitacao.values[0])
-            self.mongo.close()
-            # Exibe os atributos do cliente excluído
-            print("Conta Removida com Sucesso!")
-            print(conta_excluida.to_string())
-        else:
-            self.mongo.close()
-            print(f"O id {id} não existe.")
+        opcao_excluir = input(f"Tem certeza que deseja excluir a conta {id} [S ou N]: ")
+        if opcao_excluir.lower() == "s":
+            if not self.verifica_existencia_conta(id):
+                # Recupera os dados do novo cliente criado transformando em um DataFrame
+                df_conta = self.recupera_conta(id)
+                # Revome a conta da tabela
+                self.mongo.db["conta"].delete_one({"id":f"{id}"})
+
+                # Cria um novo objeto Conta para informar que foi removido
+                conta_excluida = Conta(df_conta.id.values[0], df_conta.tipo.values[0], df_conta.data_quitacao.values[0])
+                self.mongo.close()
+                # Exibe os atributos do cliente excluído
+                print("Conta Removida com Sucesso!")
+                print(conta_excluida.to_string())
+
+            else:
+                self.mongo.close()
+                print(f"O id {id} não existe.")
+
 
     def verifica_existencia_conta(self, id=None, external:bool=False) -> bool:
         if external:

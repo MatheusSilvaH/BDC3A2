@@ -111,7 +111,6 @@ class Controller_Parcelas:
             return None
 
     def excluir_parcela(self):
-        # Cria uma nova conexão com o banco que permite alteração
         self.mongo.connect()
 
         self.relatorio.get_relatorio_conta()
@@ -128,14 +127,10 @@ class Controller_Parcelas:
             df_parcela = self.recupera_parcela(id, id_conta)
             # id_conta = self.valida_conta(int(df_parcela.id_conta.values[0]))
 
-            opcao_excluir = input(f"Tem certeza que deseja excluir a parcela {id} [S ou N]: ")
+            opcao_excluir = input(f"Tem certeza que deseja excluir a parcela {id} da conta {id_conta}[S ou N]: ")
             if opcao_excluir.lower() == "s":
                 # Revome a parcela da tabela
-                self.mongo.db["parcelas"].delete_one({"id": id, "id_conta": id_conta,
-                                                      "data_vencimento": 1,
-                                                      "data_pagamento": 1,
-                                                      "numero_parcela": 1,
-                                                      "valor":1})
+                self.mongo.db["parcelas"].delete_many({"id": id, "id_conta": id_conta})
                 # Cria um novo objeto Item de Pedido para informar que foi removido
                 parcela_excluida = Parcelas(df_parcela.id.values[0],
                                             df_parcela.id_conta.values[0],
@@ -147,6 +142,29 @@ class Controller_Parcelas:
                 # Exibe os atributos do produto excluído
                 print("Parcela Removida com Sucesso!")
                 print(parcela_excluida.to_string())
+        else:
+            self.mongo.close()
+            print(f"O id {id} não existe.")
+
+    def excluir_todas_parcelas_conta(self, id_conta,id ):
+        self.mongo.connect()
+
+        self.relatorio.get_relatorio_conta()
+        id_conta = int(str(input("Digite o id da Conta: ")))
+        conta = self.valida_conta(id_conta)
+        if conta == None:
+            return None
+
+
+        # Verifica se a Parcela existe na base de dados
+        if not self.verifica_existencia_parcela(id, id_conta):
+            # Recupera os dados da parcela criada transformando em um DataFrame
+            df_parcela = self.recupera_parcela(id, id_conta)
+            # id_conta = self.valida_conta(int(df_parcela.id_conta.values[0]))
+
+
+            self.mongo.db["parcelas"].delete_many({"id": id, "id_conta": id_conta})
+
         else:
             self.mongo.close()
             print(f"O id {id} não existe.")
